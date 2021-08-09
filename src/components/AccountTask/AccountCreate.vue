@@ -32,6 +32,7 @@
 
       <b-button type="submit" variant="primary">Create</b-button>
       <b-button type="reset" variant="danger">Reset</b-button>
+      <b-button v-on:click="clickBack" variant="success">Back</b-button>
     </b-form>
     
   </div>
@@ -39,7 +40,7 @@
 
 <script>
 import axios from 'axios'
-import Navbar from './Navbar.vue'
+import Navbar from '../Navbar.vue'
   export default {
       components: {Navbar},
     data() {
@@ -62,22 +63,21 @@ import Navbar from './Navbar.vue'
           })
           .then((res) => {
               console.log(res)
-              alert(JSON.stringify(res))
+              this.$swal(JSON.stringify(res))
           })
           
       },
       onReset(event) {
         event.preventDefault()
-        // Reset our form values
-        this.form.email = ''
+        
         this.form.name = ''
-        this.form.food = null
-        this.form.checked = []
-        // Trick to reset/clear native browser form validation state
-        this.show = false
-        this.$nextTick(() => {
-          this.show = true
-        })
+        this.form.job = ''
+        
+       
+      },
+      clickBack(event){
+        event.preventDefault()
+        this.$router.push('/');
       }
     }
   }

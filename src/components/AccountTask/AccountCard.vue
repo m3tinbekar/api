@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container class="bv-example-row">
-  <b-row>
+  <b-row class="row">
     <b-card
       v-for="person in persons.data"
       :key="person.id"
@@ -13,26 +13,30 @@
       style="max-width: 20rem"
       class="mb-2"
     >
-      <b-card-text>
-        <h5><b>ID:</b>{{person.id}}</h5>
-        <h5><b>Mail:</b>{{person.email}}</h5>       
-      </b-card-text>
-      <b-button variant="primary" @click="onEdit">Edit</b-button>
-      <b-button variant="danger" @click="onDelete(person.id)">Delete</b-button>
+      
+      <b-button variant="success" @click="onDetail(person.id,person.email)" class="cardButton" >Detail</b-button>
+      <b-button variant="primary" @click="onEdit(person.id)" class="cardButton" v-if="$store.getters.loggedIn">Edit</b-button>
+      <b-button variant="danger" @click="onDelete(person.id)" class="cardButton" v-if="$store.getters.loggedIn">Delete</b-button>
+      
       
     </b-card>
   </b-row>
-   <b-button variant="primary" @click="onCreate" class="edit">Create</b-button>
+  
+   <b-button variant="primary" @click="onCreate" class="editCreate" v-if="$store.getters.loggedIn">Create</b-button>
 </b-container>
-    
+   
    
   </div>
+  
 </template>
 
 <script>
 import axios from "axios";
+
+
 export default {
-  //props: ["persons"],
+  
+  
   data (){
     return {
       persons:[]
@@ -43,6 +47,7 @@ export default {
       axios.get("https://reqres.in/api/users/")
         .then((res) => {
           this.persons = res.data
+          
         })
         
     },
@@ -54,24 +59,25 @@ export default {
       axios.delete("https://reqres.in/api/users/" + id)
       .then((res) => {
         console.log(res)
-        alert(JSON.stringify(res))
+        this.$swal(JSON.stringify(res))
         this.getData()
         
       });
     },
     onEdit(id){
-      axios.put("https://reqres.in/api/users/" + id ,{
-        name : this.form.name,
-        job : this.form.job
-      })
-      .then((res) => 
-      console.log(res))
+      this.$router.push("/edit/"+id);
+      
 
 
+    },
+    onDetail(id,email){
+      this.$swal("ID:\t"+ id + "\nE-Mail:\t"+ email)
+      
     }
   },
   created() {
-     this.getData();
+    
+    this.getData();
      
      
     
@@ -81,11 +87,29 @@ export default {
 
 <style>
 .mb-2 {
-  margin: 20px;
+  margin-right: 20px;
+  
+  border-color:dimgray!important;
+  
+  
 }
-.edit {
+.editCreate {
+  
   margin-top: 30px;
-  margin-left: 25px;
+  
   float: left;
 }
+.bv-example-row {
+  margin-top: 25px;
+  
+}
+.cardButton{
+  margin-right: 5px;
+}
+.row{
+  padding-left: none!important;
+  padding-right: none!important;
+}
+
+
 </style>

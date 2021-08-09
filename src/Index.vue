@@ -1,26 +1,25 @@
 <template>
     <div>
         <navbar></navbar>
-        
-        <account :persons="persons"></account>
+        <account-card></account-card>
         
 
     </div>
 </template>
 
 <script>
-import Navbar from './Navbar.vue'
-import Account from './Account.vue'
+import Navbar from './components/Navbar.vue'
+import AccountCard from './components/AccountTask/AccountCard.vue'
 
 
 
 
 export default {
     name : 'index',
-    components: {Account,Navbar},
+    components: {AccountCard,Navbar},
   data(){
     return{
-      persons:[]
+     
     }
   },
   
@@ -39,3 +38,4 @@ export default {
   }
 }
 </script>
+
